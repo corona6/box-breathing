@@ -57,6 +57,9 @@
                 if (cnt > pinput.valueAsNumber * 4 && timer1 != null) {
                     clearInterval(timer1);
                     cnt = 0;
+                    setTimeout(() => {
+                        navigator.vibrate(1001);
+                    }, 500);
                 }
                 navigator.vibrate(1001);
                 setTimeout(() => {
