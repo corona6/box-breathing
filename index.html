@@ -68,17 +68,35 @@
             }
         })
 
-        navigator.wakeLock.request('screen')
-        .then((wakeLock) => {
-        })
-        .catch((err) => {
-        })
-
         function toTime(seconds) {
             var date = new Date(null);
             date.setSeconds(seconds);
             return date.toISOString().substr(14, 5);
         }
+
+        let wakeLock = null;
+
+        const requestWakeLock = async () => {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+            } catch (err) {
+            }
+        };
+
+        requestWakeLock();
+
+        window.setTimeout(() => {
+            wakeLock.release();
+            wakeLock = null;
+        }, 1000*60*16);
+
+        const handleVisibilityChange = async () => {
+            if (wakeLock !== null && document.visibilityState === 'visible') {
+                requestWakeLock();
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
     </script>
 </head>
 <body>
