@@ -23,18 +23,46 @@
             const pinput = document.getElementById("pi_input");
             const el = document.getElementById('breath-indicator');
             const el2 = document.getElementById('dot');
+            const vibratebox = document.getElementById('vibrate');
+            var timer1 = null;
+            var cnt = 0;
 
             pinput.addEventListener("input", (event) => {
-                count.textContent = event.target.value + " (" + toTime(event.target.valueAsNumber * 16) + ")";
+                animationRestart()
+            });
+
+            vibratebox.addEventListener("change", () => {
+                animationRestart()
+            });
+
+            function animationRestart() {
+                clearInterval(timer1);
+                cnt = 0;
+                if (vibratebox.checked) {
+                    timer1 = setInterval(vibrateEvent, 4000);
+                }
+                count.textContent = pinput.value + " (" + toTime(pinput.valueAsNumber * 16) + ")";
                 el.style.animation = 'none';
                 el.offsetHeight;
                 el.style.animation = null;
-                el.style.animationIterationCount = event.target.valueAsNumber + 0.25;
+                el.style.animationIterationCount = pinput.valueAsNumber + 0.25;
                 el2.style.animation = 'none';
                 el2.offsetHeight;
                 el2.style.animation = null;
-                el2.style.animationIterationCount = event.target.valueAsNumber + 0.25;
-            });
+                el2.style.animationIterationCount = pinput.valueAsNumber + 0.25;
+            }
+
+            function vibrateEvent() {
+                cnt++;
+                if (cnt > pinput.valueAsNumber * 4 && timer1 != null) {
+                    clearInterval(timer1);
+                    cnt = 0;
+                }
+                navigator.vibrate(1001);
+                setTimeout(() => {
+                    navigator.vibrate(0);
+                }, 50);
+            }
         })
 
         navigator.wakeLock.request('screen')
@@ -60,8 +88,12 @@
             </div>
         </div>
         <div id="count-container">
-            <input type="range" id="pi_input" name="pi_input" min="0" max="57" />
+            <input type="range" id="pi_input" name="pi_input" min="0" max="57" style="width: 70%;" />
             <output id="count"></output>
+        </div>
+        <div id="vibrate-container">
+            <input type="checkbox" id="vibrate" name="vibrate" />
+            <label for="vibrate">vibrate</label>
         </div>
     </div>
 </body>
@@ -180,9 +212,17 @@
 
     #count-container {
         display: flex;
+        flex-flow: column;
         justify-content: center;
         align-items: center;
-        height: 15vh;
+        height: 20vh;
+    }
+
+    #vibrate-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 30vh;
     }
     
     #breath-indicator {
