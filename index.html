@@ -9,7 +9,6 @@
     <link rel="icon" type="image/png" href="./icons/icon_64.png"/>
     <link rel="manifest" href="./manifest.webmanifest" />
     <title>Box Breathing</title>
-    <meta name="description" content="Box breathing Animation is an animation (not a gif or simple diagram) that visually guides you in the exercise. It is also known as square breathing or diaphragmatic breathing. It can have numerous benefits such as reduced anxiety, stress and increased mindfulness, calmness and relaxation.">
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
@@ -20,19 +19,22 @@
         };
 
         window.addEventListener('load', () => {
-            
-            const box = document.getElementById('visual')
+            const count = document.getElementById("count");
+            const pinput = document.getElementById("pi_input");
+            const el = document.getElementById('breath-indicator');
+            const el2 = document.getElementById('dot');
 
-            box.addEventListener('click', () => {
-                var el = document.getElementById('breath-indicator');
-                var el2 = document.getElementById('dot');
+            pinput.addEventListener("input", (event) => {
+                count.textContent = event.target.value + " (" + toTime(event.target.valueAsNumber * 16) + ")";
                 el.style.animation = 'none';
                 el.offsetHeight;
                 el.style.animation = null;
+                el.style.animationIterationCount = event.target.valueAsNumber + 0.25;
                 el2.style.animation = 'none';
                 el2.offsetHeight;
-                el2.style.animation = null; 
-            })
+                el2.style.animation = null;
+                el2.style.animationIterationCount = event.target.valueAsNumber + 0.25;
+            });
         })
 
         navigator.wakeLock.request('screen')
@@ -40,6 +42,12 @@
         })
         .catch((err) => {
         })
+
+        function toTime(seconds) {
+            var date = new Date(null);
+            date.setSeconds(seconds);
+            return date.toISOString().substr(14, 5);
+        }
     </script>
 </head>
 <body>
@@ -50,6 +58,10 @@
                 <div id="breath-indicator"></div>
                 <div id="dot"></div>
             </div>
+        </div>
+        <div id="count-container">
+            <input type="range" id="pi_input" name="pi_input" min="0" max="57" />
+            <output id="count"></output>
         </div>
     </div>
 </body>
@@ -130,16 +142,6 @@
 
     :root::-webkit-scrollbar { width: 0 }
     :root { scrollbar-width: none; }
-
-    input {
-        background-color: #222;
-        border-bottom: 1px solid #aaa;
-        border: 0;
-        padding: 8px;
-        color: white;
-        width: 60px;
-        appearance: textfield;
-    }
     
     #visual {
         position: relative;
@@ -174,6 +176,13 @@
         width: var(--box-side-length);
         height: var(--box-side-length);
         border: var(--box-border-width) solid var(--box-border-color);
+    }
+
+    #count-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 5vh;
     }
     
     #breath-indicator {
