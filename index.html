@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" href="./icons/icon_64.png"/>
     <link rel="manifest" href="./manifest.webmanifest" />
     <title>Box Breathing</title>
+    <link rel="stylesheet" href="checkbox.css">
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
@@ -24,8 +25,13 @@
             const el = document.getElementById('breath-indicator');
             const el2 = document.getElementById('dot');
             const vibratebox = document.getElementById('vibrate');
+            const gaenbox = document.getElementById('guided-audio-en');
+            const gajabox = document.getElementById('guided-audio-ja');
             var timer1 = null;
+            var timer2 = null;
             var cnt = 0;
+            var cnta = 0;
+            var audioFileName = "";
 
             pinput.addEventListener("input", (event) => {
                 animationRestart()
@@ -35,11 +41,24 @@
                 animationRestart()
             });
 
+            gaenbox.addEventListener("change", () => {
+                animationRestart()
+            });
+
+            gajabox.addEventListener("change", () => {
+                animationRestart()
+            });
+
             function animationRestart() {
                 clearInterval(timer1);
+                clearInterval(timer2);
                 cnt = 0;
+                cnta = 0;
                 if (vibratebox.checked) {
                     timer1 = setInterval(vibrateEvent, 4000);
+                }
+                if (gaenbox.checked || gajabox.checked) {
+                    timer2 = setInterval(guidedAudio, 4000);
                 }
                 count.textContent = pinput.value + " (" + toTime(pinput.valueAsNumber * 16) + ")";
                 el.style.animation = 'none';
@@ -65,6 +84,33 @@
                 setTimeout(() => {
                     navigator.vibrate(0);
                 }, 50);
+            }
+
+            function guidedAudio() {
+                cnta++;
+                var audio = new Audio();
+                audioFileName = gaenbox.checked ? "en" : "ja"
+                if (cnta > pinput.valueAsNumber * 4 && timer2 != null) {
+                    clearInterval(timer2);
+                    cnta = 0;
+                    audio.src = 'guided_audio/finish_' + audioFileName + '.mp3';
+                }
+                switch ((cnta - 1) % 4 + 1) {
+                    case 1:
+                        audio.src = 'guided_audio/inhale_' + audioFileName + '.mp3';
+                        break;
+                    case 2:
+                        audio.src = 'guided_audio/hold_' + audioFileName + '.mp3';
+                        break;
+                    case 3:
+                        audio.src = 'guided_audio/exhale_' + audioFileName + '.mp3';
+                        break;
+                    case 4:
+                        audio.src = 'guided_audio/hold_' + audioFileName + '.mp3';
+                        break;
+                    default:
+                }
+                audio.play();
             }
         })
 
@@ -112,9 +158,59 @@
             <input type="range" id="pi_input" name="pi_input" min="0" max="57" style="width: 70%;" />
             <output id="count"></output>
         </div>
-        <div id="vibrate-container">
-            <input type="checkbox" id="vibrate" name="vibrate" />
-            <label for="vibrate">vibrate</label>
+        <div id="checkbox-container">
+            <div class="ic-Super-toggle--on-off">
+                <input type="checkbox" id="vibrate" name="vibrate" class="ic-Super-toggle__input" />
+                <label class="ic-Super-toggle__label" for="vibrate">
+                    <div class="ic-Super-toggle__screenreader">Enable flux capacitor</div>
+                    <div class="ic-Super-toggle__disabled-msg" data-checked="On" data-unchecked="Off" aria-hidden="true"></div>
+                    <div class="ic-Super-toggle-switch" aria-hidden="true">
+                    <div class="ic-Super-toggle-option-LEFT" aria-hidden="true">
+                        <svg class="ic-Super-toggle__svg" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" width="548.9" height="548.9" viewBox="0 0 548.9 548.9" xml:space="preserve"><polygon points="449.3 48 195.5 301.8 99.5 205.9 0 305.4 95.9 401.4 195.5 500.9 295 401.4 548.9 147.5 "></polygon></svg>
+                    </div>
+                    <div class="ic-Super-toggle-option-RIGHT" aria-hidden="true">
+                        <svg class="ic-Super-toggle__svg" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 28 28" xml:space="preserve"><polygon points="28 22.4 19.6 14 28 5.6 22.4 0 14 8.4 5.6 0 0 5.6 8.4 14 0 22.4 5.6 28 14 19.6 22.4 28 " fill="#030104"></polygon></svg>
+                    </div>
+                    </div>
+                </label>
+            </div>
+            <label for="vibrate" style="margin-left: 10px;">vibrate</label>
+        </div>
+        <div id="checkbox-container">
+            <div class="ic-Super-toggle--on-off">
+                <input type="checkbox" id="guided-audio-en" name="guided-audio-en" class="ic-Super-toggle__input" />
+                <label class="ic-Super-toggle__label" for="guided-audio-en">
+                    <div class="ic-Super-toggle__screenreader">Enable flux capacitor</div>
+                    <div class="ic-Super-toggle__disabled-msg" data-checked="On" data-unchecked="Off" aria-hidden="true"></div>
+                    <div class="ic-Super-toggle-switch" aria-hidden="true">
+                    <div class="ic-Super-toggle-option-LEFT" aria-hidden="true">
+                        <svg class="ic-Super-toggle__svg" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" width="548.9" height="548.9" viewBox="0 0 548.9 548.9" xml:space="preserve"><polygon points="449.3 48 195.5 301.8 99.5 205.9 0 305.4 95.9 401.4 195.5 500.9 295 401.4 548.9 147.5 "></polygon></svg>
+                    </div>
+                    <div class="ic-Super-toggle-option-RIGHT" aria-hidden="true">
+                        <svg class="ic-Super-toggle__svg" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 28 28" xml:space="preserve"><polygon points="28 22.4 19.6 14 28 5.6 22.4 0 14 8.4 5.6 0 0 5.6 8.4 14 0 22.4 5.6 28 14 19.6 22.4 28 " fill="#030104"></polygon></svg>
+                    </div>
+                    </div>
+                </label>
+            </div>
+            <label for="guided-audio-en" style="margin-left: 10px;">guided audio (English)</label>
+        </div>
+        <div id="checkbox-container">
+            <div class="ic-Super-toggle--on-off">
+                <input type="checkbox" id="guided-audio-ja" name="guided-audio-ja" class="ic-Super-toggle__input" />
+                <label class="ic-Super-toggle__label" for="guided-audio-ja">
+                    <div class="ic-Super-toggle__screenreader">Enable flux capacitor</div>
+                    <div class="ic-Super-toggle__disabled-msg" data-checked="On" data-unchecked="Off" aria-hidden="true"></div>
+                    <div class="ic-Super-toggle-switch" aria-hidden="true">
+                    <div class="ic-Super-toggle-option-LEFT" aria-hidden="true">
+                        <svg class="ic-Super-toggle__svg" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" width="548.9" height="548.9" viewBox="0 0 548.9 548.9" xml:space="preserve"><polygon points="449.3 48 195.5 301.8 99.5 205.9 0 305.4 95.9 401.4 195.5 500.9 295 401.4 548.9 147.5 "></polygon></svg>
+                    </div>
+                    <div class="ic-Super-toggle-option-RIGHT" aria-hidden="true">
+                        <svg class="ic-Super-toggle__svg" xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 28 28" xml:space="preserve"><polygon points="28 22.4 19.6 14 28 5.6 22.4 0 14 8.4 5.6 0 0 5.6 8.4 14 0 22.4 5.6 28 14 19.6 22.4 28 " fill="#030104"></polygon></svg>
+                    </div>
+                    </div>
+                </label>
+            </div>
+            <label for="guided-audio-ja" style="margin-left: 10px;">guided audio (Japanese)</label>
         </div>
     </div>
 </body>
@@ -239,7 +335,7 @@
         height: 20vh;
     }
 
-    #vibrate-container {
+    #checkbox-container {
         display: flex;
         justify-content: center;
         align-items: center;
