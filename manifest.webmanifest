@@ -2,9 +2,9 @@
     "$schema": "https://json.schemastore.org/web-manifest-combined.json",
     "name": "Box Breathing",
     "short_name": "Box Breathing",
-    "description": "Box Breathing Animation is an online guide that assists practicing the Box Breathing technique.",
-    "theme_color": "#131313",
-    "background_color": "#131313",
+    "description": "Box Breathing",
+    "theme_color": "#000000",
+    "background_color": "#000000",
     "display": "fullscreen",
     "icons": [
         {
