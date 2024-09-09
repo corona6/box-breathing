@@ -7,7 +7,17 @@ self.addEventListener("install", async (event) => {
         await Promise.all(cacheKeys.map(name => caches.delete(name)))
 
         const cache = await caches.open(MAIN_CACHE)
-        await cache.addAll(['.'])
+        await cache.addAll([
+            '.',
+            '/guided_audio/exhale_en.mp3',
+            '/guided_audio/exhale_ja.mp3',
+            '/guided_audio/finish_en.mp3',
+            '/guided_audio/finish_ja.mp3',
+            '/guided_audio/hold_en.mp3',
+            '/guided_audio/hold_ja.mp3',
+            '/guided_audio/inhale_en.mp3',
+            '/guided_audio/inhale_ja.mp3'
+        ])
     })())
 });
   
