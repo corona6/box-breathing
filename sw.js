@@ -8,16 +8,15 @@ self.addEventListener("install", async (event) => {
 
         const cache = await caches.open(MAIN_CACHE)
         await cache.addAll([
-            '/',
-            '/checkbox.css',
-            '/guided_audio/exhale_en.mp3',
-            '/guided_audio/exhale_ja.mp3',
-            '/guided_audio/finish_en.mp3',
-            '/guided_audio/finish_ja.mp3',
-            '/guided_audio/hold_en.mp3',
-            '/guided_audio/hold_ja.mp3',
-            '/guided_audio/inhale_en.mp3',
-            '/guided_audio/inhale_ja.mp3'
+            '.',
+            './guided_audio/exhale_en.mp3',
+            './guided_audio/exhale_ja.mp3',
+            './guided_audio/finish_en.mp3',
+            './guided_audio/finish_ja.mp3',
+            './guided_audio/hold_en.mp3',
+            './guided_audio/hold_ja.mp3',
+            './guided_audio/inhale_en.mp3',
+            './guided_audio/inhale_ja.mp3'
         ])
     })())
 });
