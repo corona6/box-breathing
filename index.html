@@ -13,7 +13,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
-                .register('./sw.js')
+                .register('./sw.js', {scope: '/box-breathing/'})
                 .then((registration) => {
                     registration.update()
                 })

@@ -1,10 +1,10 @@
 
-const MAIN_CACHE = 'main';
+const MAIN_CACHE = 'main_20240910';
 
 self.addEventListener("install", async (event) => {
     event.waitUntil((async () => {
-        const cacheKeys = await caches.keys()
-        await Promise.all(cacheKeys.map(name => caches.delete(name)))
+        // const cacheKeys = await caches.keys()
+        // await Promise.all(cacheKeys.map(name => caches.delete(name)))
 
         const cache = await caches.open(MAIN_CACHE)
         await cache.addAll([
