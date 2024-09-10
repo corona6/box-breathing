@@ -4,17 +4,7 @@ const MAIN_CACHE = 'main_20240910';
 self.addEventListener("install", async (event) => {
     event.waitUntil((async () => {
         const cache = await caches.open(MAIN_CACHE)
-        await cache.addAll([
-            '.',
-            './guided_audio/exhale_en.mp3',
-            './guided_audio/exhale_ja.mp3',
-            './guided_audio/finish_en.mp3',
-            './guided_audio/finish_ja.mp3',
-            './guided_audio/hold_en.mp3',
-            './guided_audio/hold_ja.mp3',
-            './guided_audio/inhale_en.mp3',
-            './guided_audio/inhale_ja.mp3'
-        ])
+        await cache.addAll(['.'])
     })())
 });
   
